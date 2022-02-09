@@ -209,8 +209,11 @@ class Packer:
         )
 
         for bin in self.bins:
+            print(bin)
             for item in self.items:
+                print(item.string())
                 if self.pack_to_bin(bin, item):
+                    print(item.string())
                     self.items.remove(item)
 
             if distribute_items:
