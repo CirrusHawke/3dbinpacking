@@ -154,7 +154,7 @@ class Packer:
             if not response:
                 bin.unfitted_items.append(item)
 
-            return
+            return response
 
         for axis in range(0, 3):
             items_in_bin = bin.items
@@ -185,10 +185,11 @@ class Packer:
                     fitted = True
                     break
             if fitted:
-                break
+                return True
+            else:
+                bin.unfitted_items.append(item)
+                return False
 
-        if not fitted:
-            bin.unfitted_items.append(item)
 
     def pack(
         self, bigger_first=False, distribute_items=False,
@@ -209,7 +210,8 @@ class Packer:
 
         for bin in self.bins:
             for item in self.items:
-                self.pack_to_bin(bin, item)
+                if self.pack_to_bin(bin, item):
+                    self.items.remove(item)
 
             if distribute_items:
                 for item in bin.items:
